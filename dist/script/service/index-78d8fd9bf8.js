@@ -1,0 +1,1 @@
+var mainIndex=function(n){return n.initTab=function(){$("#tab-container").easytabs()},n}(window.mainIndex||{});$(function(){mainIndex.initTab()});

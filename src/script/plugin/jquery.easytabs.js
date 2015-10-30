@@ -11,6 +11,13 @@
  */
 ( function($) {
 
+
+  /**
+   * 菜单树控件  
+   * @class easytabs
+   * @param {object} options
+   * @return easytabs
+   */
   $.easytabs = function(container, options) {
 
         // Attach to plugin anything that should be available via
@@ -396,6 +403,7 @@
 
     // Set the default tab, whether from hash (bookmarked) or option,
     // called by init
+
     var setDefaultTab = function(){
       var hash = window.location.hash.match(/^[^\?]*/)[0],
           $selectedTab = plugin.matchTab(hash).parent(),
@@ -501,7 +509,12 @@
     // functions
     var activateTab = function($clicked, $targetPanel, ajaxUrl, callback) {
       plugin.panels.stop(true,true);
-
+      /**
+       * 当某一个tab被选中之前触发
+       * @event before       
+       * @param event, $clicked, $targetPanel, setting
+       * @return {object} this
+       */
       if( fire($container,"easytabs:before", [$clicked, $targetPanel, settings]) ){
         var $visiblePanel = plugin.panels.filter(":visible"),
             $panelContainer = $targetPanel.parent(),
@@ -520,7 +533,12 @@
         // Set lastHash to help indicate if defaultTab should be
         // activated across multiple tab instances.
         lastHash = hash;
-
+        /**
+         * 当两个tab切换的中间过程的时候触发，
+         * @event midTransition     
+         * @param event, $clicked, $targetPanel, settings  
+         * @return {object} this
+         */
         // TODO: Move this function elsewhere
         showPanel = function() {
           // At this point, the previous panel is hidden, and the new one will be selected
@@ -547,6 +565,12 @@
           } else {
             skipUpdateToHash = false;
           }
+          /**
+           * 当tab被选中的时候触发，
+           * @event after     
+           * @param event, $clicked, $targetPanel, settings  
+           * @return {object} this
+           */
 
           $targetPanel
             [transitions.show](transitions.speed, settings.transitionInEasing, function(){
